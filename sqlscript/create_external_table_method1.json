@@ -1,5 +1,5 @@
 {
-	"name": "SQL script 3",
+	"name": "create_external_table_method1",
 	"properties": {
 		"content": {
 			"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseDelimitedTextFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseDelimitedTextFormat] \n\tWITH ( FORMAT_TYPE = DELIMITEDTEXT ,\n\t       FORMAT_OPTIONS (\n\t\t\t FIELD_TERMINATOR = ',',\n\t\t\t FIRST_ROW = 11,\n\t\t\t USE_TYPE_DEFAULT = FALSE\n\t\t\t))\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'synapse_onpremise2cloud_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [synapse_onpremise2cloud_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://synapse@onpremise2cloud.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE SALES.CUSTOMER ([Index] bigint,[Customer Id] nvarchar(4000),[First Name] nvarchar(4000),[Last Name] nvarchar(4000),[Company] nvarchar(4000),[City] nvarchar(4000),[Country] nvarchar(4000),[Phone 1] nvarchar(4000),[Phone 2] nvarchar(4000),[Email] nvarchar(4000),[Subscription Date] nvarchar(4000),[Website] nvarchar(4000)\n\t)\n\tWITH (\n\tLOCATION = 'customers_20240710.csv',\n\tDATA_SOURCE = [synapse_onpremise2cloud_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseDelimitedTextFormat]\n\t)\nGO\n\n\n\nSELECT TOP 100 * FROM SALES.CUSTOMER\nGO",
